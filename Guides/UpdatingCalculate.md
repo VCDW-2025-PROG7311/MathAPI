@@ -10,7 +10,7 @@
     ```
 1. Modify the token check if to return an Unauthorised message (Error 401).
     ```
-        if (mathCalculation.FirebaseUuid == null)
+        if (mathCalculation.FirebaseUuid == null || mathCalculation.FirebaseUuid == "")
         {
             return Unauthorized(new Error("Token missing!"));
         }
@@ -59,4 +59,4 @@
     }
     ```
 
-Troubleshooting: If you get any errors, ensure that your PostCalculation method should match [this method]() (Coming soon!)
+Troubleshooting: If you get any errors, ensure that your PostCalculation method should match [this method](https://github.com/VCDW-2025-PROG7311/MathAPI/blob/9352fe0771f6d52c1c6dfaad6d342555c594ea99/Controllers/MathController.cs#L43)

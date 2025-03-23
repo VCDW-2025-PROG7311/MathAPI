@@ -69,4 +69,4 @@
     }
     ```
 
-Troubleshooting: If you get any errors, ensure that your DeleteHistory method matches [this method]() (coming soon)
+Troubleshooting: If you get any errors, ensure that your DeleteHistory method matches [this method](https://github.com/VCDW-2025-PROG7311/MathAPI/blob/9352fe0771f6d52c1c6dfaad6d342555c594ea99/Controllers/MathController.cs#L158)
