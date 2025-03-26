@@ -117,6 +117,11 @@ namespace MathAPI.Controllers
                 return Unauthorized(new Error("Token missing!"));
             }
 
+            if (_context.MathCalculations.Count(m => m.FirebaseUuid.Equals(Token)) == 0)
+            {
+                return Unauthorized(new Error("Token invalid!"));
+            }
+
             List<MathCalculation> historyItems = await _context.MathCalculations.Where(m => m.FirebaseUuid.Equals(Token)).ToListAsync();
 
             if (historyItems.Count > 0)
@@ -160,6 +165,11 @@ namespace MathAPI.Controllers
             if (Token == null)
             {
                 return Unauthorized(new Error("Token missing!"));
+            }
+
+            if (_context.MathCalculations.Count(m => m.FirebaseUuid.Equals(Token)) == 0)
+            {
+                return Unauthorized(new Error("Token invalid!"));
             }
 
             List<MathCalculation> removableItems = await _context.MathCalculations.Where(m => m.FirebaseUuid.Equals(Token)).ToListAsync();

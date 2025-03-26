@@ -4,7 +4,7 @@ Before commencing, consult the following documentation as it gives an idea of wh
 * https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-8.0&tabs=visual-studio
 * https://mattfrear.com/2020/04/21/request-and-response-examples-in-swashbuckle-aspnetcore/
 
-Note: When you run your API, becuase you already added Swagger, you may have noticed documentation loading up. Hopefully, it will now make sense and you can customise it.
+Note: When you run your API, because you already added Swagger, you may have noticed documentation loading up. Hopefully, it will now make sense and you can customise it.
 
 ### Adding in Swagger to your project
 
