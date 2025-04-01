@@ -23,5 +23,6 @@ It is recommended that you follow these steps in order:
 1. [Updating the History() to return JSON](/Guides/UpdatingHistory.md)
 1. [Updating the Clear() to return JSON](/Guides/UpdatingClear.md)
 1. [Swagger and Documentation of the API](/Guides/SwaggerAndDocs.md)
+1. Moving auth from client into API (you need to figure this out from the code)
 
 Remember to test your API endpoints as you go!
