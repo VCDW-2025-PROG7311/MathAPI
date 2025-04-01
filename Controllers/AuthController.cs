@@ -1,7 +1,12 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Firebase.Auth;
 using MathAPI.Models;
 using MathAPI.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace MathAPI.Controllers
@@ -12,10 +17,12 @@ namespace MathAPI.Controllers
     {
         
         FirebaseAuthProvider auth;
+        byte[] key;
 
         public AuthController()
         {
             auth = new FirebaseAuthProvider(new FirebaseConfig(Environment.GetEnvironmentVariable("FirebaseMathApp")));
+            key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("MathAppJwtKey"));
         }
 
         [HttpPost("Register")]
@@ -27,10 +34,30 @@ namespace MathAPI.Controllers
 
                 var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(login.Email, login.Password);
                 string currentUserId = fbAuthLink.User.LocalId;
+                string currentUserEmail = fbAuthLink.User.Email;
 
                 if (currentUserId != null)
                 {
-                    return Ok(new AuthResponse(currentUserId));
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, currentUserId),
+                        new Claim(ClaimTypes.Email, currentUserEmail),
+                        new Claim("UserId", currentUserId)
+                    };
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(claims),
+                        Expires = DateTime.UtcNow.AddDays(1),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    var tokenString = tokenHandler.WriteToken(token);
+
+                    return Ok(new AuthResponse(tokenString,currentUserId));
                 }
             }
             catch (FirebaseAuthException ex)
@@ -53,12 +80,31 @@ namespace MathAPI.Controllers
             {
                 var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(login.Email, login.Password);
                 string currentUserId = fbAuthLink.User.LocalId;
+                string currentUserEmail = fbAuthLink.User.Email;
 
                 if (currentUserId != null)
                 {
-                    return Ok(new AuthResponse(currentUserId));
-                }
+                    var tokenHandler = new JwtSecurityTokenHandler();
 
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, currentUserId),
+                        new Claim(ClaimTypes.Email, currentUserEmail),
+                        new Claim("UserId", currentUserId)
+                    };
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(claims),
+                        Expires = DateTime.UtcNow.AddDays(1),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    var tokenString = tokenHandler.WriteToken(token);
+
+                    return Ok(new AuthResponse(tokenString,currentUserId));
+                }
             }
             catch (FirebaseAuthException ex)
             {
