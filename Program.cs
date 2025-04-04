@@ -18,7 +18,6 @@ builder.Services.AddDbContext<MathDbContext>(options =>
 
 
 var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("MathAppJwtKey"));
-System.Console.WriteLine(Environment.GetEnvironmentVariable("MathAppJwtKey"));
 
 builder.Services.AddAuthentication(options =>
 {

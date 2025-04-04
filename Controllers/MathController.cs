@@ -79,11 +79,6 @@ namespace MathAPI.Controllers
         {
             var Token = User.FindFirst("UserId")?.Value;
 
-            if (_context.MathCalculations.Count(m => m.FirebaseUuid.Equals(Token)) == 0)
-            {
-                return BadRequest(new Error("User invalid!"));
-            }
-
             List<MathCalculation> historyItems = await _context.MathCalculations.Where(m => m.FirebaseUuid.Equals(Token)).ToListAsync();
 
             if (historyItems.Count > 0)
@@ -107,11 +102,6 @@ namespace MathAPI.Controllers
         public async Task<IActionResult> DeleteHistory()
         {            
             var Token = User.FindFirst("UserId")?.Value;
-
-            if (_context.MathCalculations.Count(m => m.FirebaseUuid.Equals(Token)) == 0)
-            {
-                return BadRequest(new Error("User invalid!"));
-            }
 
             List<MathCalculation> removableItems = await _context.MathCalculations.Where(m => m.FirebaseUuid.Equals(Token)).ToListAsync();
 
